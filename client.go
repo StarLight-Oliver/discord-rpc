@@ -94,8 +94,6 @@ func (client *Client) sendCommand(command command, data *map[string]interface{})
 		return "", err
 	}
 
-	fmt.Println(response)
-
 	var responseData payload
 	err = json.Unmarshal([]byte(response), &responseData)
 	if err != nil {
@@ -135,8 +133,6 @@ func (client *Client) sendCommandWithInterface(command command, data interface{}
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(string(packetData))
 
 	response, err := client.Socket.Send(1, string(packetData))
 	if err != nil {

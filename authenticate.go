@@ -72,8 +72,6 @@ func (client *Client) OAuth(code string) (string, error) {
 
 	s := buf.String()
 
-	fmt.Println(s)
-
 	data := OAuthTokenResponse{}
 	err = json.Unmarshal([]byte(s), &data)
 
@@ -104,7 +102,7 @@ func (client *Client) Authorize(scopes []string) (string, error) {
 	}
 
 	code := dataPacket.Data.Code
-
+	// allow for custom implementations of this in the future
 	// we now send it to the authenticate endpoint
 	access_token, err := client.OAuth(code)
 
