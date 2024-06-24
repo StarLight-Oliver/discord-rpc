@@ -29,7 +29,7 @@ type OAuthTokenResponse struct {
 	AccessToken string `json:"access_token"`
 }
 
-func (client *Client) OAuth(code string) (string, error) {
+func OAuth(client *Client, code string) (string, error) {
 
 	payload := OAuthTokenRequest{
 		GrantType:   "authorization_code",
@@ -82,6 +82,10 @@ func (client *Client) OAuth(code string) (string, error) {
 	return data.AccessToken, nil
 }
 
+func (client *Client) SetCustomAuthorize(authorize func(*Client, string) (string, error)) {
+	client.authorize = authorize
+}
+
 func (client *Client) Authorize(scopes []string) (string, error) {
 
 	payload := make(map[string]interface{})
@@ -104,7 +108,7 @@ func (client *Client) Authorize(scopes []string) (string, error) {
 	code := dataPacket.Data.Code
 	// allow for custom implementations of this in the future
 	// we now send it to the authenticate endpoint
-	access_token, err := client.OAuth(code)
+	access_token, err := client.authorize(client, code)
 
 	if err != nil {
 		return "", err

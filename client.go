@@ -12,6 +12,7 @@ type Client struct {
 	ClientID     string
 	ClientSecret string
 	Socket       *ipc.Socket
+	authorize    func(*Client, string) (string, error)
 }
 
 type command string
@@ -37,7 +38,7 @@ func NewClient(clientID string, clientSecret string) (*Client, error) {
 		return nil, err
 	}
 
-	client := &Client{clientID, clientSecret, socket}
+	client := &Client{clientID, clientSecret, socket, OAuth}
 
 	response, err := client.Socket.Send(0, string(packetData))
 
