@@ -90,7 +90,11 @@ func (client *Client) sendCommand(command command, data *map[string]interface{})
 		return "", err
 	}
 
-	response, err := client.Socket.Send(1, string(packetData))
+	packetString := string(packetData)
+
+	fmt.Println(packetString)
+
+	response, err := client.Socket.Send(1, packetString)
 	if err != nil {
 		return "", err
 	}
